@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/rides.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -7,10 +9,17 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           shadowColor: Colors.white,
+          title: Center(
+            child: Image.asset('images/logoUniRides.png',
+            fit: BoxFit.contain,
+            height: 50,),
+          )
         ),
-        body: Center(
-          child: Container(child: Text("O que quiseres escrever")),
-        ),
+        body: Column(children: [
+          Rides(),
+          Rides(),
+          Rides()
+        ],),
         bottomNavigationBar: BottomAppBar(
           color: Colors.black,
           child: (Row(
@@ -18,21 +27,22 @@ class HomePage extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
+
                 },
                 icon: const Icon(Icons.home),
-                iconSize: 50,
+                iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.search),
-                iconSize: 50,
+                iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.person),
-                iconSize: 50,
+                iconSize: 40,
                 color: Colors.white,
               ),
             ],
