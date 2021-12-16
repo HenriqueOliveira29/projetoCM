@@ -18,8 +18,15 @@ class HomePage extends StatelessWidget {
         body: Column(children: [
           Rides(),
           Rides(),
+          Rides(),
           Rides()
         ],),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+
+        },
+        child: IconButton(onPressed:(){}, icon: Icon(Icons.add)) ,
+        backgroundColor: Colors.black,),
         bottomNavigationBar: BottomAppBar(
           color: Colors.black,
           child: (Row(
