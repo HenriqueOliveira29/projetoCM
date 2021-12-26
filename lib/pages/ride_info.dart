@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/rides.dart';
+import '../models/ride.dart';
 
-class HomePage extends StatelessWidget {
+class RideInfo extends StatelessWidget {
+  Ride? ride;
+  RideInfo({ Key? key, this.ride}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,32 +17,9 @@ class HomePage extends StatelessWidget {
                 fit: BoxFit.contain,
                 height: 50,
               ),
-            )
-          ),
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Rides(),
-                Rides(),
-                Rides(),
-                Rides(),
-                Rides(),
-                Rides(),
-                Rides(),
-                Rides(),
-              ],
-            ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            
-          },
-          child: IconButton(onPressed: () {
-            Navigator.pushNamed(context, '/createdrives');
-          }, icon: Icon(Icons.add)),
-          backgroundColor: Colors.black,
+            )),
+        body: Container(
+          child: Text(ride!.origem.toString()),
         ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.black,
@@ -47,7 +27,9 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
                 icon: const Icon(Icons.home),
                 iconSize: 40,
                 color: Colors.white,

@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'models/ride.dart';
 
 class Rides extends StatelessWidget {
-  const Rides({Key? key}) : super(key: key);
+  Ride? ride;
+  Rides({Key? key, this.ride}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+
       margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       height: 100,
       width: double.infinity,
@@ -36,12 +39,12 @@ class Rides extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(50.0)),
                               border: Border.all(color: Colors.grey),
                               image: DecorationImage(
-                                image: ExactAssetImage('images/me.jpg'),
+                                image: ExactAssetImage("https://avatars.githubusercontent.com/u/68897798?v=4"),
                                 fit: BoxFit.cover,
                               )),
                         ),
                         Container(
-                          child: Text("Henrique"),
+                          child: Text(ride!.nomeCondutor),
                         )
                       ],
                     ),
@@ -51,17 +54,17 @@ class Rides extends StatelessWidget {
                     children: [
                       Row(children: [
                         Container(
-                          child: Text("Origem: Valongo "),
+                          child: Text(ride!.origem.toString()),
                           margin: new EdgeInsets.symmetric(
                               horizontal: 5, vertical: 5),
                         ),
                         Container(
-                          child: Text("Destino: IPMAIA"),
+                          child: Text(ride!.destino.toString()),
                           margin: new EdgeInsets.symmetric(
                               horizontal: 30, vertical: 5),
                         ),
                       ]),
-                      Container(child: Text("Data/Hora: 12/12/2021 07:00")),
+                      Container(child: Text("Data/Hora: ${ride!.data.toString()}")),
                       Container(
                           child: Text(
                         "Lugares vagos: 3",
