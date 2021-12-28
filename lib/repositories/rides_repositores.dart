@@ -34,7 +34,7 @@ class RidesRepository {
           foto: "https://avatars.githubusercontent.com/u/68897798?v=4"),
           
       Ride(
-          destino: "Univerdidade de Felgueiras",
+          destino: "Universidade de Felgueiras",
           origem: "Valongo",
           nomeCondutor: "Sandra",
           data: "12/10/2021",
