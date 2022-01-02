@@ -13,40 +13,39 @@ class RidesRepository {
   RidesRepository() {
     _rides.addAll([
       Ride(
-          destino: "IPMAIA",
-          origem: "Valongo",
-          nomeCondutor: "Antonio",
-          data: "12/10/2021",
-          foto: "https://avatars.githubusercontent.com/u/68897798?v=4",),
-          
+        destino: "IPMAIA",
+        origem: "Valongo",
+        nomeCondutor: "Antonio",
+        data: "12/10/2021",
+        foto: "https://avatars.githubusercontent.com/u/68897798?v=4",
+      ),
       Ride(
-          destino: "Universidade Catolica",
-          origem: "Gondomar",
-          nomeCondutor: "Luis",
-          data: "12/10/2021",
-          foto: "https://avatars.githubusercontent.com/u/68897798?v=4",),
-          
+        destino: "Universidade Catolica",
+        origem: "Gondomar",
+        nomeCondutor: "Luis",
+        data: "12/10/2021",
+        foto: "https://avatars.githubusercontent.com/u/68897798?v=4",
+      ),
       Ride(
           destino: "Universidade do Porto",
           origem: "Rio Tinto",
           nomeCondutor: "Andre",
           data: "12/10/2021",
           foto: "https://avatars.githubusercontent.com/u/68897798?v=4"),
-          
       Ride(
-          destino: "Universidade de Felgueiras",
-          origem: "Valongo",
-          nomeCondutor: "Sandra",
-          data: "12/10/2021",
-          foto: "https://avatars.githubusercontent.com/u/68897798?v=4",),
-          
+        destino: "Universidade de Felgueiras",
+        origem: "Valongo",
+        nomeCondutor: "Sandra",
+        data: "12/10/2021",
+        foto: "https://avatars.githubusercontent.com/u/68897798?v=4",
+      ),
       Ride(
-          destino: "IPMAIA",
-          origem: "Vila do Conde",
-          nomeCondutor: "Goncalo",
-          data: "12/10/2021",
-          foto: "https://avatars.githubusercontent.com/u/68897798?v=4",),
-      
+        destino: "IPMAIA",
+        origem: "Vila do Conde",
+        nomeCondutor: "Goncalo",
+        data: "12/10/2021",
+        foto: "https://avatars.githubusercontent.com/u/68897798?v=4",
+      ),
     ]);
   }
 }

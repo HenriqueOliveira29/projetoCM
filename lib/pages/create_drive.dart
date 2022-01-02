@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/models/ride.dart';
+import 'package:flutter_application_1/repositories/rides_repositores.dart';
 
-class CreateDrive extends StatelessWidget {
+class CreateDrive extends StatefulWidget {
+  @override
+  late RidesRepository repository;
+  State<CreateDrive> createState() => _CreateDriveState();
+}
+
+class _CreateDriveState extends State<CreateDrive> {
+  final _destino = TextEditingController();
+  final _origem = TextEditingController();
+  final _data = TextEditingController();
+  final _nlugares = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,93 +31,131 @@ class CreateDrive extends StatelessWidget {
             )),
         body: SingleChildScrollView(
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Center(
-              child: Column(
-                children: [
-                  Container(
-                      margin: new EdgeInsets.symmetric(vertical: 30),
-                      child: Title(
-                        color: Colors.black,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Container(
+                        margin: new EdgeInsets.symmetric(vertical: 30),
+                        child: Title(
+                          color: Colors.black,
+                          child: Text(
+                            "Adicionar boleia",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
+                          ),
+                        )),
+                    Container(
+                      child: TextFormField(
+                        controller: _destino,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            hintText: 'Destino',
+                            labelText: "Destino"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Insira o destino';
+                          }
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15),
+                      child: TextFormField(
+                        controller: _origem,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            hintText: 'Origem',
+                            labelText: "Origem"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Insira a origem';
+                          }
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15),
+                      child: TextFormField(
+                        controller: _data,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            hintText: 'Data',
+                            labelText: "Data"),
+                        keyboardType: TextInputType.datetime,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Insira a Data';
+                          }
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15),
+                      child: TextFormField(
+                        controller: _nlugares,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            hintText: 'Numero de lugares',
+                            labelText: "Numero de lugares"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Insira o numero de lugares';
+                          }
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      width: 200,
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              widget.repository.addRide(
+                                  ride: Ride(
+                                      data: _data.toString(),
+                                      destino: _destino.toString(),
+                                      origem: _origem.toString(),
+                                      nomeCondutor: _nlugares.toString(),
+                                      foto:
+                                          "https://avatars.githubusercontent.com/u/68897798?v=4"));
+                            });
+                            Navigator.pop(context);
+                          }
+                        },
                         child: Text(
-                          "Adicionar boleia",
+                          "Criar",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white),
                         ),
-                      )),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: TextField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          hintText: 'Ponto de Encontro',
-                          labelText: "Ponto de Encontro"),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        hintText: 'Destino',
-                        labelText: 'Destino',
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            primary: Colors.black),
                       ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        hintText: 'Data',
-                        labelText: 'Data',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: TextField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          hintText: 'N lugares',
-                          labelText: 'N lugares'),
-                    ),
-                  ),
-                  Container(
-                    height: 40,
-                    width: 200,
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Criar",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          primary: Colors.black),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
