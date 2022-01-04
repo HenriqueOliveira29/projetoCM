@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/create_drive.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
+import 'package:flutter_application_1/repositories/rides_repositores.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
+  runApp(ChangeNotifierProvider(
+    create: (context) => RidesRepository(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,11 +21,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomePage(),
-        '/createdrives': (context) => CreateDrive(),
-      },
+      theme: ThemeData(
+        appBarTheme:
+            const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+      ),
+      home: HomePage(),
     );
   }
 }

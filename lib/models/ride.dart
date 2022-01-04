@@ -1,14 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/models/utilizador.dart';
+
 class Ride {
-  String destino;
-  String origem;
-  String nomeCondutor;
-  String data;
-  String foto;
+  String destiny;
+  String meetingPoint;
+  String date;
+  Utilizador driver;
+  String numberSeat;
 
   Ride(
-      {required this.destino,
-      required this.origem,
-      required this.nomeCondutor,
-      required this.data,
-      required this.foto});
+      {required this.destiny,
+      required this.meetingPoint,
+      required this.driver,
+      required this.date,
+      required this.numberSeat});
 }

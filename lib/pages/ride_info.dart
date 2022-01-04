@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/main.dart';
+import 'package:flutter_application_1/pages/profile_page.dart';
 import '../models/ride.dart';
 
 class RideInfo extends StatelessWidget {
@@ -39,7 +40,7 @@ class RideInfo extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      ride!.data,
+                      ride!.date,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     )),
@@ -52,11 +53,11 @@ class RideInfo extends StatelessWidget {
                     children: [
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Text('Origem: ${ride!.origem.toString()}',
+                        child: Text('Origem: ${ride!.meetingPoint.toString()}',
                             style: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 18)),
                       ),
-                      Text('Destino: ${ride!.destino.toString()}',
+                      Text('Destino: ${ride!.destiny.toString()}',
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 18))
                     ],
@@ -80,7 +81,7 @@ class RideInfo extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(50.0)),
                             border: Border.all(color: Colors.grey),
                             image: DecorationImage(
-                              image: NetworkImage(ride!.foto),
+                              image: NetworkImage(ride!.driver.profilePicture),
                               fit: BoxFit.cover,
                             )),
                       ),
@@ -92,12 +93,12 @@ class RideInfo extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              ride!.nomeCondutor,
+                              ride!.driver.name,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 18),
                             ),
                             Text(
-                              'Contactar ${ride!.nomeCondutor}',
+                              'Contactar ${ride!.driver.phone}',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18,
@@ -112,7 +113,7 @@ class RideInfo extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 5),
                   child: Text(
-                    'N lugares vagos',
+                    '${ride!.numberSeat} lugares vagos',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -160,7 +161,13 @@ class RideInfo extends StatelessWidget {
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProfilePage(),
+                      ));
+                },
                 icon: const Icon(Icons.person),
                 iconSize: 40,
                 color: Colors.white,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/utilizador.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/models/ride.dart';
+import 'package:flutter_application_1/pages/profile_page.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
+import 'package:provider/provider.dart';
 
 class CreateDrive extends StatefulWidget {
   @override
-  late RidesRepository repository;
   State<CreateDrive> createState() => _CreateDriveState();
 }
 
@@ -15,9 +17,11 @@ class _CreateDriveState extends State<CreateDrive> {
   final _data = TextEditingController();
   final _nlugares = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late RidesRepository repository;
 
   @override
   Widget build(BuildContext context) {
+    repository = Provider.of<RidesRepository>(context);
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
@@ -126,16 +130,14 @@ class _CreateDriveState extends State<CreateDrive> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            setState(() {
-                              widget.repository.addRide(
-                                  ride: Ride(
-                                      data: _data.toString(),
-                                      destino: _destino.toString(),
-                                      origem: _origem.toString(),
-                                      nomeCondutor: _nlugares.toString(),
-                                      foto:
-                                          "https://avatars.githubusercontent.com/u/68897798?v=4"));
-                            });
+                            repository.addRide(
+                                ride: Ride(
+                                    date: _data.text.toString(),
+                                    destiny: _destino.text.toString(),
+                                    meetingPoint: _origem.text.toString(),
+                                    numberSeat: _nlugares.text.toString(),
+                                    driver: repository.utilizador));
+
                             Navigator.pop(context);
                           }
                         },
@@ -180,7 +182,13 @@ class _CreateDriveState extends State<CreateDrive> {
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProfilePage(),
+                      ));
+                },
                 icon: const Icon(Icons.person),
                 iconSize: 40,
                 color: Colors.white,

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/create_drive.dart';
 import 'package:flutter_application_1/pages/home_controller.dart';
 import 'package:flutter_application_1/models/ride.dart';
+import 'package:flutter_application_1/pages/profile_page.dart';
 import 'package:flutter_application_1/pages/ride_info.dart';
+import 'package:flutter_application_1/repositories/rides_repositores.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,16 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = HomeController();
-  }
+  late RidesRepository rides;
 
   @override
   Widget build(BuildContext context) {
+    rides = Provider.of<RidesRepository>(context);
+    //rides = context.watch<RidesRepository>();
+
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             )),
         body: ListView.separated(
             itemBuilder: (BuildContext context, int i) {
-              final List<Ride> tabela = controller.tabela;
+              final List<Ride> tabela = rides.rides.toList();
               return ListTile(
                 leading: Column(
                   children: [
@@ -44,35 +44,36 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.all(Radius.circular(50.0)),
                           border: Border.all(color: Colors.grey),
                           image: DecorationImage(
-                            image: NetworkImage(
-                                "https://avatars.githubusercontent.com/u/68897798?v=4"),
+                            image:
+                                NetworkImage(tabela[i].driver.profilePicture),
                             fit: BoxFit.cover,
                           )),
                     ),
-                    Text(tabela[i].nomeCondutor)
+                    Text(tabela[i].driver.name)
                   ],
                 ),
-                title: Text("Destino: ${tabela[i].destino}"),
-                subtitle: Text("Origem: ${tabela[i].origem}"),
-                trailing: Text("Data: ${tabela[i].data}"),
+                title: Text("Destino: ${tabela[i].destiny}"),
+                subtitle: Text("Origem: ${tabela[i].meetingPoint}"),
+                trailing: Text("Data: ${tabela[i].date}"),
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => RideInfo(
-                            ride: tabela[i]),
-                      )
-                  );
+                        builder: (_) => RideInfo(ride: tabela[i]),
+                      ));
                 },
               );
             },
             separatorBuilder: (_, __) => Divider(),
-            itemCount: controller.tabela.length),
+            itemCount: rides.rides.length),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
           child: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/createdrives');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => CreateDrive()),
+                );
               },
               icon: Icon(Icons.add)),
           backgroundColor: Colors.black,
@@ -83,9 +84,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                onPressed: () {
-                 
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.home),
                 iconSize: 40,
                 color: Colors.white,
@@ -97,7 +96,13 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProfilePage(),
+                      ));
+                },
                 icon: const Icon(Icons.person),
                 iconSize: 40,
                 color: Colors.white,
