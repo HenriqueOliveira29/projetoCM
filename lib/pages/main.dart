@@ -11,6 +11,7 @@ void main() async {
     create: (context) => RidesRepository(),
     child: MyApp(),
   ));
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {

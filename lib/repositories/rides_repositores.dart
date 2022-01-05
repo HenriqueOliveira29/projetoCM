@@ -1,23 +1,35 @@
 import 'dart:collection';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/controller/db.dart';
 import 'package:flutter_application_1/models/ride.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/utilizador.dart';
 
 class RidesRepository extends ChangeNotifier {
   final List<Ride> _rides = [];
-  Utilizador _user = Utilizador(
-      name: "Henrique",
-      phone: "987654321",
-      profilePicture: "https://avatars.githubusercontent.com/u/68897798?v=4",
-      email: "henrique.olive29@gmail.com",
-      university: "IPMAIA");
+  final Utilizador _user = Utilizador(
+    name: "Henrique",
+    phone: "987654321",
+    profilePicture: "https://avatars.githubusercontent.com/u/68897798?v=4",
+    email: "henrique.olive29@gmail.com",
+    university: "IPMAIA",
+  );
 
-  UnmodifiableListView<Ride> get rides => UnmodifiableListView(this._rides);
+  UnmodifiableListView<Ride> get rides => UnmodifiableListView(_rides);
 
   get utilizador => this._user;
 
-  void addRide({required Ride ride}) {
+  void addRide({required Ride ride}) async {
+    FirebaseFirestore db = await DBFirestore.get();
+    await db.collection("rides1").add({
+      'date': ride.date,
+      'destiny': ride.destiny,
+      'numberseat': ride.numberSeat,
+      'origin': ride.meetingPoint,
+      'userdriver': ride.driver.phone,
+      'passanger': []
+    });
     _rides.add(ride);
     notifyListeners();
   }

@@ -26,7 +26,10 @@ class HistoricPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int i) {
           final List<Ride> rides = controller.rides;
           return ListTile(
-            leading: Image.network(rides[i].driver.profilePicture),
+            leading: Image.asset(
+                (rides[i].driver.name == controller.utilizador.name)
+                    ? 'images/arrow_green.png'
+                    : 'images/arrow_red.png'),
             title: Text('Ponto de encontro: ' +
                 rides[i].meetingPoint +
                 '\nDestino: ' +
