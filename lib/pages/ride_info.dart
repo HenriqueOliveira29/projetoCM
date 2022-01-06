@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/main.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/profile_page.dart';
 import '../models/ride.dart';
 

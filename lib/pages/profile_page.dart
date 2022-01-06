@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
 import 'package:flutter_application_1/pages/historic_page.dart';
+import 'package:flutter_application_1/services/auth_service.dart';
+import 'package:provider/src/provider.dart';
 
 // ignore: must_be_immutable, use_key_in_widget_constructors
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   var controller = RidesRepository();
+
+  logout() async {
+    try {
+      await context.read<AuthService>().logout();
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,155 +36,162 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Row(children: [
-              Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 50,
-                  horizontal: 45,
-                ),
-                width: 120.0,
-                height: 120.0,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-                  border: Border.all(color: Colors.grey),
-                  image: DecorationImage(
-                    image: NetworkImage(controller.utilizador.profilePicture),
-                    fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Row(children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 35,
+                    horizontal: 45,
+                  ),
+                  width: 120.0,
+                  height: 120.0,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(60.0)),
+                    border: Border.all(color: Colors.grey),
+                    image: DecorationImage(
+                      image: NetworkImage(controller.utilizador.profilePicture),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Olá, ${controller.utilizador.name}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            logout();
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "Logout",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              fontSize: 18,
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+              ]),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Olá, ${controller.utilizador.name}",
+                    "E-mail: ${controller.utilizador.email}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
+                      height: 2.2,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: const Text(
-                      "Logout",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        fontSize: 18,
-                      ),
+                  Text(
+                    "Telemóvel: ${controller.utilizador.phone}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      height: 2.2,
+                    ),
+                  ),
+                  Text(
+                    "Instituto: ${controller.utilizador.university}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      height: 2.2,
                     ),
                   ),
                 ],
               ),
-            ]),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "E-mail: ${controller.utilizador.email}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    height: 2.2,
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+              ),
+              Container(
+                height: 40,
+                width: 220,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HistoricPage()),
+                    );
+                  },
+                  child: const Text(
+                    "HISTÓRICO",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text(
-                  "Telemóvel: ${controller.utilizador.phone}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    height: 2.2,
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    primary: Colors.black,
                   ),
-                ),
-                Text(
-                  "Instituto: ${controller.utilizador.university}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    height: 2.2,
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 20),
-            ),
-            Container(
-              height: 40,
-              width: 220,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HistoricPage()),
-                  );
-                },
-                child: const Text(
-                  "HISTÓRICO",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  primary: Colors.black,
                 ),
               ),
-            ),
-            Container(
-              height: 40,
-              width: 220,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "EDITAR DADOS",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white,
+              Container(
+                height: 40,
+                width: 220,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "EDITAR DADOS",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    primary: Colors.black,
                   ),
-                  primary: Colors.black,
                 ),
               ),
-            ),
-            Container(
-              height: 40,
-              width: 220,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "MUDAR PASSWORD",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white,
+              Container(
+                height: 40,
+                width: 220,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "MUDAR PASSWORD",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    primary: Colors.black,
                   ),
-                  primary: Colors.black,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
