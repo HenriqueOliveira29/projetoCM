@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/utilizador.dart';
+import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
 import 'package:flutter_application_1/pages/historic_page.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
@@ -11,7 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  var controller = RidesRepository();
+  late RidesRepository rides;
 
   logout() async {
     try {
@@ -24,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    rides = Provider.of<RidesRepository>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -52,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: const BorderRadius.all(Radius.circular(60.0)),
                     border: Border.all(color: Colors.grey),
                     image: DecorationImage(
-                      image: NetworkImage(controller.utilizador.profilePicture),
+                      image: NetworkImage(rides.utilizador.profilePicture),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -61,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Olá, ${controller.utilizador.name}",
+                      "Olá, ${rides.utilizador.name}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -77,9 +80,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: const Text(
                             "Logout",
                             style: TextStyle(
-                              color: Colors.red,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
                               fontSize: 18,
                             ),
                           ),
@@ -91,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "E-mail: ${controller.utilizador.email}",
+                    "E-mail: ${rides.utilizador.email}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -99,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    "Telemóvel: ${controller.utilizador.phone}",
+                    "Telemóvel: ${rides.utilizador.phone}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -107,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    "Instituto: ${controller.utilizador.university}",
+                    "Instituto: ${rides.utilizador.university}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -200,7 +202,12 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
               icon: const Icon(Icons.home),
               iconSize: 40,
               color: Colors.white,
@@ -212,12 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
             ),
             IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-              },
+              onPressed: () {},
               icon: const Icon(Icons.person),
               iconSize: 40,
               color: Colors.white,

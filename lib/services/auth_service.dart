@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_1/controller/db.dart';
 import 'package:flutter_application_1/pages/login_page.dart';
+import 'package:flutter_application_1/repositories/rides_repositores.dart';
 
 class AuthException implements Exception {
   String message;

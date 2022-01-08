@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/create_drive.dart';
 import 'package:flutter_application_1/pages/home_controller.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_application_1/models/ride.dart';
 import 'package:flutter_application_1/pages/profile_page.dart';
 import 'package:flutter_application_1/pages/ride_info.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
+import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

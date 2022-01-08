@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/utilizador.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
@@ -18,6 +19,7 @@ class _CreateDriveState extends State<CreateDrive> {
   final _nlugares = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late RidesRepository repository;
+  late User utilizador;
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +118,7 @@ class _CreateDriveState extends State<CreateDrive> {
                             ),
                             hintText: 'Numero de lugares',
                             labelText: "Numero de lugares"),
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Insira o numero de lugares';

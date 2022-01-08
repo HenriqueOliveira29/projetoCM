@@ -3,13 +3,21 @@ import 'package:flutter_application_1/models/ride.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
 import 'package:flutter_application_1/pages/profile_page.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable, use_key_in_widget_constructors
-class HistoricPage extends StatelessWidget {
-  var controller = RidesRepository();
+class HistoricPage extends StatefulWidget {
+  @override
+  State<HistoricPage> createState() => _HistoricPageState();
+}
+
+class _HistoricPageState extends State<HistoricPage> {
+  late RidesRepository rides;
 
   @override
   Widget build(BuildContext context) {
+    rides = Provider.of<RidesRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -24,24 +32,24 @@ class HistoricPage extends StatelessWidget {
       ),
       body: ListView.separated(
         itemBuilder: (BuildContext context, int i) {
-          final List<Ride> rides = controller.rides;
+          final List<Ride> tabela = rides.rides.toList();
           return ListTile(
             leading: Image.asset(
-                (rides[i].driver.name == controller.utilizador.name)
+                (tabela[i].driver.name == rides.utilizador.name)
                     ? 'images/arrow_green.png'
                     : 'images/arrow_red.png'),
             title: Text('Ponto de encontro: ' +
-                rides[i].meetingPoint +
+                tabela[i].meetingPoint +
                 '\nDestino: ' +
-                rides[i].destiny +
+                tabela[i].destiny +
                 '\nData e hora: ' +
-                rides[i].date),
-            trailing: Image.network(rides[i].driver.profilePicture),
+                tabela[i].date),
+            trailing: Image.network(tabela[i].driver.profilePicture),
           );
         },
         separatorBuilder: (_, __) => const Divider(),
         padding: const EdgeInsets.all(16),
-        itemCount: controller.rides.length,
+        itemCount: rides.rides.length,
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
