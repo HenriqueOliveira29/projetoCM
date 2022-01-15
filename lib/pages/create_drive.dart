@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/utilizador.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_application_1/models/ride.dart';
 import 'package:flutter_application_1/pages/profile_page.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class CreateDrive extends StatefulWidget {
   @override
@@ -133,13 +135,19 @@ class _CreateDriveState extends State<CreateDrive> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            DateFormat inputformat =
+                                DateFormat('dd-MM-yyy hh:mm');
+                            DateTime dataride = inputformat.parse(_data.text);
+                            List<String> array = [];
                             repository.addRide(
                                 ride: Ride(
-                                    date: _data.text.toString(),
+                                    id: "",
+                                    date: Timestamp.fromDate(dataride),
                                     destiny: _destino.text.toString(),
                                     meetingPoint: _origem.text.toString(),
                                     numberSeat: _nlugares.text.toString(),
-                                    driver: repository.utilizador));
+                                    driver: repository.utilizador,
+                                    passeger: array));
 
                             Navigator.pop(context);
                           }
@@ -172,25 +180,23 @@ class _CreateDriveState extends State<CreateDrive> {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/home');
                 },
                 icon: const Icon(Icons.home),
                 iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/pesquisar');
+                },
                 icon: const Icon(Icons.search),
                 iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProfilePage(),
-                      ));
+                  Navigator.pushNamed(context, '/profile');
                 },
                 icon: const Icon(Icons.person),
                 iconSize: 40,

@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/ride_info.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
+            //automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
             shadowColor: Colors.white,
             title: Center(
@@ -56,7 +58,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 title: Text("Destino: ${tabela[i].destiny}"),
                 subtitle: Text("Origem: ${tabela[i].meetingPoint}"),
-                trailing: Text("Data: ${tabela[i].date}"),
+                trailing: Text(DateFormat("'Data:' dd/MM/yyy")
+                    .format(tabela[i].date.toDate())),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -72,10 +75,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
           child: IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => CreateDrive()),
-                );
+                Navigator.pushNamed(context, '/createdrive');
               },
               icon: Icon(Icons.add)),
           backgroundColor: Colors.black,
@@ -92,18 +92,16 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/pesquisar');
+                },
                 icon: const Icon(Icons.search),
                 iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProfilePage(),
-                      ));
+                  Navigator.pushNamed(context, '/profile');
                 },
                 icon: const Icon(Icons.person),
                 iconSize: 40,

@@ -43,7 +43,7 @@ class _HistoricPageState extends State<HistoricPage> {
                 '\nDestino: ' +
                 tabela[i].destiny +
                 '\nData e hora: ' +
-                tabela[i].date),
+                tabela[i].date.toString()),
             trailing: Image.network(tabela[i].driver.profilePicture),
           );
         },
@@ -58,24 +58,23 @@ class _HistoricPageState extends State<HistoricPage> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/home');
               },
               icon: const Icon(Icons.home),
               iconSize: 40,
               color: Colors.white,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/pesquisar');
+              },
               icon: const Icon(Icons.search),
               iconSize: 40,
               color: Colors.white,
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
+                Navigator.pushNamed(context, '/profile');
               },
               icon: const Icon(Icons.person),
               iconSize: 40,

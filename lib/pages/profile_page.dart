@@ -74,6 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         child: ElevatedButton(
                           onPressed: () {
+                            Navigator.popAndPushNamed(context, '/home');
                             logout();
                             Navigator.pop(context);
                           },
@@ -203,17 +204,16 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
+                Navigator.pushNamed(context, '/home');
               },
               icon: const Icon(Icons.home),
               iconSize: 40,
               color: Colors.white,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/pesquisar');
+              },
               icon: const Icon(Icons.search),
               iconSize: 40,
               color: Colors.white,

@@ -31,6 +31,7 @@ class RidesRepository extends ChangeNotifier {
   _getUser() async {
     user = _auth.currentUser;
     await SelectUtilizador(user!.uid);
+    notifyListeners();
   }
 
   SelectUtilizador(String uid) async {
@@ -47,12 +48,13 @@ class RidesRepository extends ChangeNotifier {
 
   void addRide({required Ride ride}) async {
     FirebaseFirestore db = await DBFirestore.get();
-    _getUser();
+    await _getUser();
     await db.collection("rides").add({
-      'date': ride.date.toString(),
+      'date': (ride.date),
       'destiny': ride.destiny.toString(),
       'numberseat': ride.numberSeat.toString(),
       'origin': ride.meetingPoint.toString(),
+      'passenger': ride.passeger,
       'userdriver': user!.uid,
     });
     _rides.add(ride);
@@ -74,34 +76,55 @@ class RidesRepository extends ChangeNotifier {
   _readRides() async {
     FirebaseFirestore db = await DBFirestore.get();
     final snapshot = await db.collection('rides').get();
-    _getUser();
     print(snapshot.docs.length);
-
+    await _getUser();
     //Utilizador driver = _user!;
     snapshot.docs.forEach((doc) async {
       Ride ride = Ride(
+          id: doc.id,
           date: doc.get('date'),
           meetingPoint: doc.get('origin'),
           destiny: doc.get('destiny'),
           numberSeat: doc.get('numberseat'),
-          driver: await SelectUser(doc.get('userdriver').toString()));
-      _rides.add(ride);
-      notifyListeners();
+          driver: await SelectUser(doc.get('userdriver').toString()),
+          passeger: doc.get('passenger'));
+      if (Timestamp.now().compareTo(ride.date) < 0) {
+        _rides.add(ride);
+        notifyListeners();
+      }
     });
   }
 
-  //Future<List<Ride>> SearchRide(String destiny) {
-  //List<Ride> results = [];
-  //_rides.forEach((element) {
-  //if (element.destiny.toString() == destiny) {
-  //results.add(element);
-  //}
-  //});
-  //return results;
-  //}
+  insertPassenger(String uidpassenger, Ride ride) async {
+    FirebaseFirestore db = await DBFirestore.get();
+    final snapshot1 = await db.collection('rides').doc(ride.id).get();
+
+    List<dynamic> passengerclone = [];
+    passengerclone = snapshot1.get('passenger');
+    if (int.parse(ride.numberSeat) < passengerclone.length ||
+        !passengerclone.contains(uidpassenger)) {
+      passengerclone.add(uidpassenger.toString());
+      final snapshot = await db
+          .collection('rides')
+          .doc(ride.id)
+          .update({'passenger': passengerclone});
+    }
+
+    notifyListeners();
+  }
+
+  List<Ride> SearchRide(String destiny, String origin) {
+    List<Ride> results = [];
+    _rides.forEach((element) {
+      if (element.destiny.toString() == destiny &&
+          element.meetingPoint.toString() == origin) {
+        results.add(element);
+      }
+    });
+    return results;
+  }
 
   RidesRepository() {
     _readRides();
-    _getUser();
   }
 }

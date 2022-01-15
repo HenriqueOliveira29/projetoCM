@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_application_1/pages/create_drive.dart';
+import 'package:flutter_application_1/pages/historic_page.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/pages/login_page.dart';
+import 'package:flutter_application_1/pages/profile_page.dart';
+import 'package:flutter_application_1/pages/search.dart';
 import 'package:flutter_application_1/repositories/rides_repositores.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/widgets/auth_check.dart';
@@ -35,6 +39,14 @@ class MyApp extends StatelessWidget {
             const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
       ),
       home: AuthCheck(),
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/home': (context) => HomePage(),
+        '/createdrive': (context) => CreateDrive(),
+        '/profile': (context) => ProfilePage(),
+        '/historico': (context) => HistoricPage(),
+        '/pesquisar': (context) => Search(),
+      },
     );
   }
 }

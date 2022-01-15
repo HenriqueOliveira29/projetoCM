@@ -2,14 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/profile_page.dart';
+import 'package:flutter_application_1/repositories/rides_repositores.dart';
+import 'package:provider/provider.dart';
 import '../models/ride.dart';
+import 'package:intl/intl.dart';
 
-class RideInfo extends StatelessWidget {
+class RideInfo extends StatefulWidget {
   Ride? ride;
   RideInfo({Key? key, this.ride, user}) : super(key: key);
 
   @override
+  State<RideInfo> createState() => _RideInfoState();
+}
+
+class _RideInfoState extends State<RideInfo> {
+  late RidesRepository rides;
+  @override
   Widget build(BuildContext context) {
+    rides = Provider.of<RidesRepository>(context);
+    var number =
+        int.parse(widget.ride!.numberSeat) - widget.ride!.passeger.length;
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
@@ -40,7 +52,9 @@ class RideInfo extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      ride!.date,
+                      DateFormat.yMd()
+                          .add_jm()
+                          .format(widget.ride!.date.toDate()),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     )),
@@ -53,11 +67,12 @@ class RideInfo extends StatelessWidget {
                     children: [
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Text('Origem: ${ride!.meetingPoint.toString()}',
+                        child: Text(
+                            'Origem: ${widget.ride!.meetingPoint.toString()}',
                             style: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 18)),
                       ),
-                      Text('Destino: ${ride!.destiny.toString()}',
+                      Text('Destino: ${widget.ride!.destiny.toString()}',
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 18))
                     ],
@@ -81,7 +96,8 @@ class RideInfo extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(50.0)),
                             border: Border.all(color: Colors.grey),
                             image: DecorationImage(
-                              image: NetworkImage(ride!.driver.profilePicture),
+                              image: NetworkImage(
+                                  widget.ride!.driver.profilePicture),
                               fit: BoxFit.cover,
                             )),
                       ),
@@ -93,12 +109,12 @@ class RideInfo extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              ride!.driver.name,
+                              widget.ride!.driver.name,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 18),
                             ),
                             Text(
-                              'Contactar ${ride!.driver.phone}',
+                              'Contactar ${widget.ride!.driver.phone}',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18,
@@ -113,30 +129,41 @@ class RideInfo extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 5),
                   child: Text(
-                    '${ride!.numberSeat} lugares vagos',
+                    '${number} lugares vagos',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
-                Container(
-                  height: 40,
-                  width: 200,
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      "RESERVAR",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        primary: Colors.black),
-                  ),
-                )
+                (widget.ride!.driver.email == rides.user!.email)
+                    ? Container()
+                    : Container(
+                        height: 40,
+                        width: 200,
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        child: (widget.ride!.passeger.length <
+                                int.parse(widget.ride!.numberSeat))
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  rides.insertPassenger(
+                                      rides.user!.uid, widget.ride!);
+                                },
+                                child: Text(
+                                  'RESERVAR',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                    primary: Colors.black),
+                              )
+                            : Container(
+                                child: Text("Lugares ocupados"),
+                              ),
+                      )
               ],
             ),
           ),
@@ -148,25 +175,23 @@ class RideInfo extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/home');
                 },
                 icon: const Icon(Icons.home),
                 iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/pesquisar');
+                },
                 icon: const Icon(Icons.search),
                 iconSize: 40,
                 color: Colors.white,
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProfilePage(),
-                      ));
+                  Navigator.pushNamed(context, '/profile');
                 },
                 icon: const Icon(Icons.person),
                 iconSize: 40,
